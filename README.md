@@ -22,3 +22,28 @@ These are the suggested steps:
 - `cd build`
 - `cmake ..`
 - `make`: This will create an executable `ExtendedKF`
+
+## Running the Filter
+From the build directory, execute `./ExtendedKF`. The output should be:
+```
+Listening to port 4567
+Connected!!!
+```
+As you can see, the simulator connect to it right away.
+
+The following is an image of the simulator after running my initial implementation
+![](https://github.com/JuAnne/CarND-P6-Extended-Kalman-Filter/blob/master/images/rmse_big.png)
+
+The RMSE outcome doesn't meet the CRITERIA: 
+```
+px, py, vx, vy output coordinates must have an RMSE <= [.11, .11, 0.52, 0.52]
+```
+
+I plotted the px, py, vx, vy with groud truth data and found out the RMSE blew up at measurement 274, when the car had sharp turn and velocity input changed from positive value to negative value (as following debug images shown):
+![](https://github.com/JuAnne/CarND-P6-Extended-Kalman-Filter/blob/master/images/debug1.PNG)
+![](https://github.com/JuAnne/CarND-P6-Extended-Kalman-Filter/blob/master/images/debug2.PNG)
+![](https://github.com/JuAnne/CarND-P6-Extended-Kalman-Filter/blob/master/images/debug3.PNG)
+
+**This indicates an angle normalizing  issue. After fixing it in the EKF function, I got good RMSE result.
+Here is the simulator final state after running the EKL with dataset 1:**
+![](https://github.com/JuAnne/CarND-P6-Extended-Kalman-Filter/blob/master/images/rmse.PNG)
